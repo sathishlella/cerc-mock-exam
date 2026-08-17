@@ -14,7 +14,7 @@ Open `index.html` in any browser, or visit the hosted page. There is nothing to 
 - **Medium** covers how concepts connect: which framework, which list, which order.
 - **Hard** covers exact numbers, dates and fine distinctions. Still recall, just deeper.
 
-**Exam mode** combines the tiers into the 50 questions most likely to appear, and gives you 60 minutes with no feedback until you submit, matching the real exam's pacing of roughly 72 seconds per question. The mix is 28 easy, 16 medium and 6 hard, weighted toward straightforward recall.
+**Exam mode** combines the tiers into the 50 questions most likely to appear, and gives you 60 minutes with no feedback until you submit, matching the real exam's pacing of roughly 72 seconds per question. The mix is 27 easy, 17 medium and 6 hard, weighted toward straightforward recall.
 
 Results break down by topic and flag anything below the 70% pass mark.
 
@@ -36,14 +36,15 @@ All 150 questions, weighted by how much of the course manual each topic occupies
 |---|---|
 | Carbon Footprint & Net Zero | 24 |
 | Bursa, NSRF & IFRS S1/S2 | 24 |
-| GRI Standards | 17 |
-| ESG & SDGs | 15 |
-| ESG & Sustainability Reporting | 15 |
-| Stakeholder Engagement | 14 |
-| Materiality: Impact vs Financial | 14 |
+| GRI Standards | 14 |
+| ESG & SDGs | 14 |
+| ESG & Sustainability Reporting | 14 |
+| Stakeholder Engagement | 10 |
+| Materiality: Impact vs Financial | 11 |
 | Material Threats & Opportunities | 13 |
 | ESG Governance | 8 |
 | Greenwashing & Terms | 6 |
+| ISO Standards & ESG Ratings | 12 |
 
 Every concept from the official mock paper is included in the predicted exam, since those are the likeliest to reappear. The rest are predictions drawn from manual content the official mock never touched.
 
