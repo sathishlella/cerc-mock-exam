@@ -1,41 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Interactive CERC mock exam: 50 questions with an explanation on every option, in study or timed exam mode.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128203;</text></svg>">
 <title>CERC Mock Exam</title>
 <style>
   :root{
-    --paper:#F4F6F5; --card:#FFFFFF; --card-2:#EDF1F0;
-    --ink:#12201F; --ink-2:#3C4E4B; --muted:#697C79; --line:#D5DEDC;
-    --accent:#0F5C57; --accent-soft:#DCEAE7; --accent-ink:#0B3F3B; --on-accent:#F4F6F5;
-    --ok:#1F7A4D; --ok-soft:#DFF0E6; --no:#A93B36; --no-soft:#F8E4E2;
-    --flag:#9A6B12; --flag-soft:#F6ECD6;
-    --shadow:0 1px 2px rgba(18,32,31,.06), 0 8px 24px -12px rgba(18,32,31,.18);
+    --paper:#FFFFFF; --card:#FFFFFF; --card-2:#EFF4F4;
+    --ink:#101D1C; --ink-2:#3A4C4B; --muted:#6B7C7B; --line:#DDE6E6;
+    --accent:#0F5C57; --accent-soft:#E3F0EE; --accent-ink:#0B3F3B; --on-accent:#FFFFFF;
+    --ok:#1C7A4A; --ok-soft:#E4F4EA; --no:#A8352F; --no-soft:#FBE8E6;
+    --flag:#8F6410; --flag-soft:#F9F0DB;
+    /* gloss: a lifted white surface reads as sheen, not a grey card on a grey ground */
+    --gloss:inset 0 1px 0 rgba(255,255,255,.9), 0 1px 2px rgba(16,29,28,.05), 0 12px 28px -20px rgba(16,29,28,.28);
+    --gloss-hi:0 1px 0 rgba(255,255,255,.85);
     --font-display:Georgia,"Iowan Old Style","Times New Roman",serif;
     --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    --r:10px;
-  }
-  @media (prefers-color-scheme:dark){
-    :root:not([data-theme="light"]){
-      --paper:#0D1413; --card:#151F1E; --card-2:#1C2827;
-      --ink:#E7EEEC; --ink-2:#B6C6C3; --muted:#869895; --line:#2B3938;
-      --accent:#4FD1C0; --accent-soft:#12302C; --accent-ink:#8FE6DA; --on-accent:#08110F;
-      --ok:#5BC98B; --ok-soft:#12301F; --no:#E88079; --no-soft:#331715;
-      --flag:#D9AE5A; --flag-soft:#2E2411;
-      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
-    }
-  }
-  :root[data-theme="dark"]{
-    --paper:#0D1413; --card:#151F1E; --card-2:#1C2827;
-    --ink:#E7EEEC; --ink-2:#B6C6C3; --muted:#869895; --line:#2B3938;
-    --accent:#4FD1C0; --accent-soft:#12302C; --accent-ink:#8FE6DA; --on-accent:#08110F;
-    --ok:#5BC98B; --ok-soft:#12301F; --no:#E88079; --no-soft:#331715;
-    --flag:#D9AE5A; --flag-soft:#2E2411;
-    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --r:12px;
   }
 
   *{box-sizing:border-box}
   body{
-    margin:0; background:var(--paper); color:var(--ink);
+    margin:0; color:var(--ink); min-height:100vh;
+    background:var(--paper);
+    background-image:
+      radial-gradient(120% 60% at 50% -10%, rgba(15,92,87,.07) 0%, rgba(15,92,87,0) 60%),
+      linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 55%, #F3F8F8 100%);
+    background-attachment:fixed; background-repeat:no-repeat;
     font-family:var(--font-ui); font-size:16px; line-height:1.55;
-    -webkit-font-smoothing:antialiased;
+    -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%;
+    -webkit-tap-highlight-color:transparent; overflow-x:hidden;
   }
   .wrap{max-width:780px; margin:0 auto; padding:0 20px 88px}
   h1,h2,h3{font-family:var(--font-display); font-weight:600; text-wrap:balance; margin:0}
@@ -60,7 +59,7 @@
     gap:1px; background:var(--line); border:1px solid var(--line);
     border-radius:var(--r); overflow:hidden; margin:28px 0;
   }
-  .fact{background:var(--card); padding:14px 16px; display:flex; flex-direction:column; gap:3px}
+  .fact{background:var(--card); padding:14px 16px; display:flex; flex-direction:column; gap:3px; box-shadow:var(--gloss-hi)}
   .fact b{font-family:var(--font-mono); font-size:22px; font-weight:600; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
   .fact span{font-size:12px; color:var(--muted)}
 
@@ -69,9 +68,9 @@
   .mode{
     text-align:left; background:var(--card); border:1px solid var(--line);
     border-radius:var(--r); padding:18px; display:flex; flex-direction:column; gap:6px;
-    color:var(--ink); transition:border-color .15s, transform .15s;
+    color:var(--ink); box-shadow:var(--gloss); transition:border-color .15s, transform .15s, box-shadow .15s;
   }
-  .mode:hover{border-color:var(--accent); transform:translateY(-1px)}
+  .mode:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 2px 4px rgba(16,29,28,.06), 0 18px 34px -20px rgba(16,29,28,.36)}
   .mode b{font-family:var(--font-display); font-size:19px; font-weight:600}
   .mode span{font-size:13.5px; color:var(--muted); line-height:1.5}
 
@@ -89,7 +88,7 @@
 
   /* ---------- header + rail ---------- */
   .bar{
-    position:sticky; top:0; z-index:20; background:var(--paper);
+    position:sticky; top:0; z-index:20; background:rgba(255,255,255,.88); backdrop-filter:saturate(1.6) blur(12px); -webkit-backdrop-filter:saturate(1.6) blur(12px);
     border-bottom:1px solid var(--line); padding:10px 0 0;
   }
   .bar-in{max-width:780px; margin:0 auto; padding:0 20px}
@@ -109,10 +108,11 @@
   .mini:hover{border-color:var(--accent); color:var(--accent)}
   .mini.on{background:var(--flag-soft); border-color:var(--flag); color:var(--flag)}
 
-  .rail{display:flex; gap:2px; padding-bottom:10px}
+  .rail{display:flex; gap:2px; padding-bottom:4px; touch-action:manipulation}
   .tick{
-    flex:1; height:7px; min-width:0; padding:0; border:0; border-radius:2px;
-    background:var(--line); transition:background .15s, transform .15s;
+    flex:1; height:21px; min-width:0; padding:7px 0; border:0; border-radius:2px;
+    background:var(--line); background-clip:content-box;
+    transition:background .15s, transform .15s;
   }
   .tick:hover{transform:scaleY(1.6)}
   .tick.done{background:var(--muted)}
@@ -135,8 +135,8 @@
   .opt{
     display:flex; gap:12px; align-items:flex-start; text-align:left; width:100%;
     background:var(--card); border:1px solid var(--line); border-radius:var(--r);
-    padding:13px 15px; color:var(--ink); line-height:1.45;
-    transition:border-color .15s, background .15s;
+    padding:13px 15px; color:var(--ink); line-height:1.45; box-shadow:var(--gloss-hi);
+    transition:border-color .15s, background .15s, box-shadow .15s;
   }
   .opt:not(:disabled):hover{border-color:var(--accent); background:var(--accent-soft)}
   .opt:disabled{cursor:default}
@@ -156,7 +156,7 @@
   .verdict.y{color:var(--ok)} .verdict.n{color:var(--no)}
 
   .key{
-    margin-top:16px; background:var(--card); border:1px solid var(--line);
+    margin-top:16px; background:var(--card); box-shadow:var(--gloss-hi); border:1px solid var(--line);
     border-left:3px solid var(--accent); border-radius:0 var(--r) var(--r) 0; padding:14px 16px;
   }
   .key .eyebrow{display:block; margin-bottom:5px}
@@ -185,8 +185,44 @@
   .passline{position:absolute; top:-4px; bottom:-4px; width:2px; background:var(--ink); opacity:.75}
   .meterlab{display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11px; color:var(--muted)}
   .revq{border-top:1px solid var(--line); padding:22px 0}
-</style>
 
+  /* ---------- mobile ---------- */
+  @media (max-width:640px){
+    body{font-size:15.5px}
+    .wrap{padding:0 16px 72px}
+    .bar-in{padding:0 16px}
+    .hero{padding:40px 0 24px; gap:14px}
+    .hero .lede{font-size:16px}
+    .facts{grid-template-columns:repeat(3,1fr); margin:22px 0}
+    .fact{padding:11px 12px}
+    .fact b{font-size:19px}
+    /* header: let it wrap rather than squeeze the timer and buttons off-screen */
+    .bar-row{flex-wrap:wrap; gap:8px 10px}
+    .bar-title{font-size:11px}
+    .bar-right{margin-left:auto}
+    .num.count{display:none}
+    .stem{font-size:20px; margin-bottom:16px}
+    .qhead{margin:22px 0 10px}
+    .opt{padding:12px 13px; gap:10px}
+    .why{font-size:13px}
+    .nav{flex-wrap:wrap}
+    .nav .btn{flex:1 1 auto; min-width:120px; padding:12px 16px}
+    .score b{font-size:52px}
+    .tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
+  }
+  @media (max-width:380px){
+    .facts{grid-template-columns:repeat(2,1fr)}
+    .stem{font-size:19px}
+  }
+  /* touch devices get no hover lift, which otherwise sticks after a tap */
+  @media (hover:none){
+    .mode:hover{transform:none}
+    .tick:hover{transform:none}
+    .opt:not(:disabled):hover{background:var(--card); border-color:var(--line)}
+  }
+</style>
+</head>
+<body>
 <div id="app"></div>
 
 <script>
@@ -574,7 +610,7 @@ function render(){
         ${state.mode==="exam" && !reviewing ? `<span class="timer" id="timer">${mmss(state.left)}</span>` : ""}
       </div>
       <div class="bar-right">
-        <span class="num">${answered()}/${Q.length} answered</span>
+        <span class="num count">${answered()}/${Q.length} answered</span>
         ${reviewing ? "" : `<button class="mini ${state.flags.has(i)?"on":""}" onclick="flag()">${state.flags.has(i)?"Flagged":"Flag"}</button>`}
         ${reviewing ? `<button class="mini" onclick="results()">Score</button>` : `<button class="mini" onclick="finish()">Submit</button>`}
       </div>
@@ -641,10 +677,10 @@ function results(){
     </div>
     <div class="meterlab"><span>0%</span><span>70% pass mark</span><span>100%</span></div>
 
-    <table class="breakdown">
+    <div class="tablewrap"><table class="breakdown">
       <thead><tr><th>Topic</th><th>Score</th></tr></thead>
       <tbody>${byTopic.map(r=>`<tr><td>${esc(r.name)}</td><td>${r.got}/${r.tot}</td></tr>`).join("")}</tbody>
-    </table>
+    </table></div>
 
     ${weak.length ? `<div class="note" style="margin-top:24px">
       <b>Revise these first</b>
@@ -667,3 +703,6 @@ function review(){ state.view = "review"; state.i = 0; render(); window.scrollTo
 
 start();
 </script>
+
+</body>
+</html>
