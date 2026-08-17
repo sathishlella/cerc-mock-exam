@@ -254,6 +254,22 @@
     .opt:not(:disabled):hover{background:var(--card); border-color:var(--line)}
   }
 
+  /* screens fade up as you move between them, and the tier cards stagger in */
+  .panel{animation:fadeUp .34s cubic-bezier(.2,.7,.3,1) both}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
+  .tiers .mode{animation:fadeUp .34s cubic-bezier(.2,.7,.3,1) both}
+
+  .back{
+    display:inline-flex; align-items:center; gap:7px; margin-top:26px;
+    background:transparent; border:0; padding:6px 0; color:var(--muted);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    transition:color .15s;
+  }
+  .back i{font-style:normal; transition:transform .18s}
+  .back:hover{color:var(--accent)}
+  .back:hover i{transform:translateX(-4px)}
+
+  .hero.tight{padding:18px 0 26px}
   .eyebrow.sect{display:block; margin:30px 0 12px}
   .tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
   .mode.tier{
@@ -265,11 +281,11 @@
   .mode.tier .go{color:var(--accent)}
   .mode.tier:hover{transform:translateY(-3px); box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 3px 7px rgba(16,29,28,.08), 0 24px 40px -20px rgba(16,29,28,.5)}
   .dots{font-size:12px; letter-spacing:3px; color:var(--accent); line-height:1}
-  .mode.wide{width:100%; margin-bottom:26px}
   @media (max-width:640px){
     .tiers{grid-template-columns:1fr; gap:10px}
     .mode.tier{padding:16px}
-    .eyebrow.sect{margin:24px 0 10px}
+    .hero.tight{padding:14px 0 20px}
+    .back{margin-top:20px}
   }
 </style>
 </head>
@@ -326,44 +342,40 @@ const TIERS = [
   {key:2, name:"Hard",   dots:"●●●", blurb:"Exact numbers, dates and fine distinctions. Still recall, just deeper."}
 ];
 
-function start(){
-  state.view = "start";
-  if(state.timer) clearInterval(state.timer);
-  app.innerHTML = `
-  <div class="wrap">
-    <div class="hero">
-      <span class="eyebrow">Certified ESG Reporting Consultant &middot; CCSD Council</span>
-      <h1>CERC Mock Exam</h1>
-      <p class="lede">150 questions drawn from the CERC course manual, graded into three tiers of 50. Every option carries an explanation of why it is right or wrong.</p>
-    </div>
-    <hr class="rule">
+const FACTS = `
     <div class="facts">
       <div class="fact"><b>150</b><span>Questions in total</span></div>
       <div class="fact"><b>3&times;50</b><span>Easy, medium, hard</span></div>
       <div class="fact"><b>60:00</b><span>Exam time limit</span></div>
       <div class="fact"><b>70%</b><span>Pass mark</span></div>
       <div class="fact"><b>10</b><span>Manual topics</span></div>
+    </div>`;
+
+function start(){
+  state.view = "start";
+  if(state.timer) clearInterval(state.timer);
+  app.innerHTML = `
+  <div class="wrap panel">
+    <div class="hero">
+      <span class="eyebrow">Certified ESG Reporting Consultant &middot; CCSD Council</span>
+      <h1>CERC Mock Exam</h1>
+      <p class="lede">150 questions drawn from the CERC course manual. Every option carries an explanation of why it is right or wrong.</p>
     </div>
-
-    <span class="eyebrow sect">Study mode &middot; pick a tier</span>
-    <div class="tiers">
-      ${TIERS.map(t=>`
-        <button class="mode tier" onclick="begin('study',${t.key})">
-          <span class="dots">${t.dots}</span>
-          <b>${t.name}</b>
-          <span class="desc">${t.blurb}</span>
-          <span class="go">50 questions <i>&rarr;</i></span>
-        </button>`).join("")}
+    <hr class="rule">
+    ${FACTS}
+    <div class="modes">
+      <button class="mode primary" onclick="chooseTier()">
+        <span class="tag">Start here</span>
+        <b>Study mode</b>
+        <span class="desc">Work through the bank in three tiers of fifty, with the explanation revealed the moment you answer. No timer.</span>
+        <span class="go">Choose a tier <i>&rarr;</i></span>
+      </button>
+      <button class="mode secondary" onclick="begin('exam')">
+        <b>Exam mode</b>
+        <span class="desc">The fifty questions most likely to appear, in 60 minutes with no feedback until you submit.</span>
+        <span class="go">Start timed run <i>&rarr;</i></span>
+      </button>
     </div>
-
-    <span class="eyebrow sect">Exam mode &middot; the predicted paper</span>
-    <button class="mode primary wide" onclick="begin('exam')">
-      <span class="tag">Predicted</span>
-      <b>Sit the predicted exam</b>
-      <span class="desc">The 50 questions most likely to appear, pulled from all three tiers and weighted toward the straightforward recall the trainer described. 60 minutes, no feedback until you submit.</span>
-      <span class="go">Start timed run <i>&rarr;</i></span>
-    </button>
-
     <div class="note">
       <b>How the predicted paper was built</b>
       <span>28 easy, 16 medium and 6 hard questions, matching a straightforward paper rather than a difficult one. It includes every concept that appears on the official mock, since those are the likeliest to reappear.</span>
@@ -371,6 +383,33 @@ function start(){
     </div>
   </div>`;
 }
+
+function chooseTier(){
+  state.view = "tiers";
+  app.innerHTML = `
+  <div class="wrap panel">
+    <button class="back" onclick="start()"><i>&larr;</i> Back</button>
+    <div class="hero tight">
+      <span class="eyebrow">Study mode</span>
+      <h1>Pick a tier</h1>
+      <p class="lede">Fifty questions each, graded by depth rather than trickiness. All three stay straightforward recall, which is what the trainer described.</p>
+    </div>
+    <div class="tiers">
+      ${TIERS.map((t,n)=>`
+        <button class="mode tier" style="animation-delay:${40+n*70}ms" onclick="begin('study',${t.key})">
+          <span class="dots">${t.dots}</span>
+          <b>${t.name}</b>
+          <span class="desc">${t.blurb}</span>
+          <span class="go">50 questions <i>&rarr;</i></span>
+        </button>`).join("")}
+    </div>
+    <div class="note">
+      <b>Not sure where to start?</b>
+      <span>Run Easy first to confirm the basics are solid, then Medium. Leave Hard until last: it is the detail tier, and the real paper is unlikely to lean on it heavily.</span>
+    </div>
+  </div>`;
+}
+
 
 function begin(mode, tier){
   state.mode = mode; state.view = "run"; state.i = 0;
