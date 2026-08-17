@@ -66,13 +66,45 @@
   .modes{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:8px 0 26px}
   @media (max-width:560px){.modes{grid-template-columns:1fr}}
   .mode{
-    text-align:left; background:var(--card); border:1px solid var(--line);
-    border-radius:var(--r); padding:18px; display:flex; flex-direction:column; gap:6px;
-    color:var(--ink); box-shadow:var(--gloss); transition:border-color .15s, transform .15s, box-shadow .15s;
+    position:relative; text-align:left; border-radius:var(--r); padding:20px;
+    display:flex; flex-direction:column; gap:7px; overflow:hidden;
+    transition:transform .15s, box-shadow .15s, border-color .15s;
   }
-  .mode:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 2px 4px rgba(16,29,28,.06), 0 18px 34px -20px rgba(16,29,28,.36)}
-  .mode b{font-family:var(--font-display); font-size:19px; font-weight:600}
-  .mode span{font-size:13.5px; color:var(--muted); line-height:1.5}
+  .mode b{font-family:var(--font-display); font-size:20px; font-weight:600; letter-spacing:-.01em}
+  .mode .desc{font-size:13.5px; line-height:1.5}
+  .mode .go{
+    margin-top:5px; font-family:var(--font-mono); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; display:flex; align-items:center; gap:7px;
+  }
+  .mode .go i{font-style:normal; transition:transform .18s}
+  .mode:hover .go i{transform:translateX(4px)}
+  .mode .tag{
+    position:absolute; top:14px; right:14px; font-family:var(--font-mono);
+    font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:20px;
+  }
+
+  /* Study is the primary path, so it carries the solid accent; exam is the
+     tinted counterpart. Both sit forward of the white ground. */
+  .mode.primary{
+    background:linear-gradient(180deg,#17756D 0%,#0F5C57 100%);
+    border:1px solid #0B4A46; color:#FFFFFF;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 2px 5px rgba(15,92,87,.22), 0 18px 32px -18px rgba(15,92,87,.6);
+  }
+  .mode.primary .desc{color:rgba(255,255,255,.86)}
+  .mode.primary .go{color:rgba(255,255,255,.95)}
+  .mode.primary .tag{background:rgba(255,255,255,.92); color:var(--accent-ink)}
+  .mode.primary:hover{transform:translateY(-3px); box-shadow:inset 0 1px 0 rgba(255,255,255,.34), 0 3px 7px rgba(15,92,87,.26), 0 26px 44px -20px rgba(15,92,87,.7)}
+
+  .mode.secondary{
+    background:linear-gradient(180deg,#FFFFFF 0%,var(--accent-soft) 100%);
+    border:1.5px solid var(--accent); color:var(--ink);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 2px 5px rgba(16,29,28,.06), 0 16px 30px -20px rgba(16,29,28,.4);
+  }
+  .mode.secondary .desc{color:var(--ink-2)}
+  .mode.secondary .go{color:var(--accent)}
+  .mode.secondary:hover{transform:translateY(-3px); box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 3px 7px rgba(16,29,28,.08), 0 24px 40px -20px rgba(16,29,28,.5)}
+  .mode:active{transform:translateY(0)}
 
   .note{
     background:var(--accent-soft); border-left:3px solid var(--accent);
@@ -217,6 +249,7 @@
   /* touch devices get no hover lift, which otherwise sticks after a tap */
   @media (hover:none){
     .mode:hover{transform:none}
+    .mode:hover .go i{transform:none}
     .tick:hover{transform:none}
     .opt:not(:disabled):hover{background:var(--card); border-color:var(--line)}
   }
@@ -535,13 +568,16 @@ function start(){
       <div class="fact"><b>10</b><span>Manual topics</span></div>
     </div>
     <div class="modes">
-      <button class="mode" onclick="begin('study')">
+      <button class="mode primary" onclick="begin('study')">
+        <span class="tag">Start here</span>
         <b>Study mode</b>
-        <span>Answer, then see immediately why each option is right or wrong. No timer. Best use of tonight.</span>
+        <span class="desc">Answer, then see immediately why each option is right or wrong. No timer. Best use of tonight.</span>
+        <span class="go">Begin <i>&rarr;</i></span>
       </button>
-      <button class="mode" onclick="begin('exam')">
+      <button class="mode secondary" onclick="begin('exam')">
         <b>Exam mode</b>
-        <span>50 questions, 60 minutes, no feedback until you submit. Rehearse the real pacing of 72 seconds per question.</span>
+        <span class="desc">50 questions, 60 minutes, no feedback until you submit. Rehearse the real pacing of 72 seconds per question.</span>
+        <span class="go">Start timed run <i>&rarr;</i></span>
       </button>
     </div>
     <div class="note">
