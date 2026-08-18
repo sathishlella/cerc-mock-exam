@@ -57,3 +57,11 @@ This is an **unofficial** study aid. It is not produced by, endorsed by, or affi
 Questions are original wordings written to test concepts from the course syllabus. They are not reproductions of any real exam paper. Page references point to the course manual purely so learners can locate the underlying source material, which is not included in this repository.
 
 Nothing here guarantees a pass. Verify anything that matters against the primary standards themselves.
+
+## Developed by
+
+**Sathish Lella** — [GitHub](https://github.com/sathishlella) · [LinkedIn](https://www.linkedin.com/in/sathishlella/)
+
+## License
+
+Released under the [MIT License](LICENSE). The licence covers the code and the original question wordings in this repository. It does not extend to the CERC course manual or any third-party standard referenced in the questions, none of which are included here.
